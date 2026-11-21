@@ -1,0 +1,1253 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Educati'on !</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,400;0,600;0,700;1,400&family=Outfit:wght@700;800&family=Caveat:wght@700&display=swap" rel="stylesheet">
+<style>
+/* VOICE: chaleureux et direct pour les 15-26 ans, posé sur les sujets sérieux (bourses, santé).
+   IDEA: un salon d'orientation la nuit : stands noirs, onglets rouges, le "ON" qui s'allume.
+   PICTURE: la mascotte-livre et des visuels encadrés avec une ombre rouge ou verte décalée.
+   COLOUR and TYPE: noir dominant, rouge #FF0013 pour agir, vert #007546 pour rassurer, blanc cassé. Outfit (titres, à la place de Filson Pro) + Figtree (texte, à la place de Proxima Nova).
+   LAYOUT: header noir + barre de menu rouge, sections noires séparées par des bandes claires, onglet rouge en haut à gauche de chaque section. */
+:root{color-scheme:dark;--red:#FF0013;--green:#007546;--bg:#0B0B0B;--s1:#161616;--s2:#232323;--off:#F5F2EC;--ink:#FFFFFF;--ink2:#DDD8D0;--mute:#B9B4AC;--line:#3A3A3A;--max:1240px;
+ --sep:#F5F2EC;--card:#1E1E1E;--card2:#1E1E1E;--soft:#ffffff12;--inv-bg:#FFFFFF;--inv-ink:#0B0B0B;--green-txt:#2bd18a;--glow:#2a0004;--m-body:#FFFFFF;--m-detail:#0B0B0B}
+:root[data-mode=light]{color-scheme:light;--bg:#FFFFFF;--s1:#F5F2EC;--s2:#ECE7DF;--ink:#0B0B0B;--ink2:#3D3A36;--mute:#6B665F;--line:#D9D3C9;
+ --sep:#0B0B0B;--card:#F2EEE7;--card2:#ECE7DF;--soft:#0000000d;--inv-bg:#0B0B0B;--inv-ink:#FFFFFF;--green-txt:#007546;--glow:#FFE1E4;--m-body:#0B0B0B;--m-detail:#FFFFFF}
+body,.top,.card .face,.tile,.box,details,.stat,.formcard,.quiz,.mem{transition:background-color .25s,color .25s}
+*{box-sizing:border-box;min-width:0}
+html{scroll-padding-top:72px}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.6 Figtree,system-ui,sans-serif;overflow-x:clip}
+h1,h2,h3,.logo-txt{font-family:Outfit,Figtree,sans-serif;line-height:1.08;margin:0;text-wrap:balance}
+h1{font-size:clamp(38px,5vw,60px);font-weight:800}
+h2{font-size:clamp(28px,3.4vw,42px);font-weight:800}
+h3{font-size:22px;font-weight:700}
+p{margin:0}
+a{color:inherit}
+img{max-width:100%;display:block}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 max(4vw,16px)}
+.on{color:var(--red)}
+.mute{color:var(--mute)}
+.small{font-size:14px;color:var(--mute)}
+.sample{font-size:13px;color:var(--mute);margin-top:18px}
+
+/* Buttons */
+.btn{white-space:nowrap;display:inline-flex;align-items:center;gap:10px;min-height:48px;padding:12px 26px;border-radius:999px;border:2px solid transparent;font:700 16px/1.2 Figtree,sans-serif;text-decoration:none;cursor:pointer;transition:transform .15s,background .15s}
+.btn:hover{transform:translateY(-2px)}
+.btn-red{background:var(--red);color:#fff}
+.btn-red:hover{background:#d90010}
+.btn-green{background:var(--green);color:#fff}
+.btn-white{background:var(--inv-bg);color:var(--inv-ink)}
+.cta .btn-white{background:#fff;color:#0B0B0B}
+.btn-line{border-color:var(--ink);color:var(--ink);background:transparent}
+.btn-line:hover{background:var(--ink);color:var(--bg)}
+:focus-visible{outline:3px solid var(--red);outline-offset:3px}
+
+/* Header */
+.top{background:var(--bg);position:sticky;top:0;z-index:20}
+.top-in{display:flex;align-items:center;justify-content:space-between;gap:20px;padding-block:14px}
+.logo{display:flex;align-items:center;gap:12px;text-decoration:none}
+.logo svg{width:40px;height:54px;flex:none;color:var(--ink)}
+.logo-txt{font-size:28px;font-weight:800;white-space:nowrap}
+.top-act{display:flex;align-items:center;gap:16px}
+.lang{width:auto;min-height:0;background:none;border:1px solid var(--line);color:var(--ink);border-radius:8px;padding:8px 10px;font:600 15px Figtree,sans-serif}
+.acc{display:grid;place-items:center;width:44px;height:44px;border-radius:50%;background:var(--inv-bg);color:var(--inv-ink)}
+.mode{display:grid;place-items:center;width:44px;height:44px;border-radius:50%;border:2px solid var(--line);background:none;color:var(--ink);cursor:pointer;flex:none}
+.mode svg{width:22px;height:22px}
+.acc svg{width:26px;height:26px}
+.burger{display:none;background:none;border:2px solid var(--ink);color:var(--ink);border-radius:10px;width:48px;height:44px;font-size:22px;cursor:pointer}
+.menu{background:var(--red)}
+.menu ul{list-style:none;margin:0 auto;display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;padding-block:12px}
+.menu a{display:block;background:#fff;color:#0B0B0B;text-decoration:none;font-weight:700;font-size:15px;padding:9px 18px;border-radius:9px;white-space:nowrap}
+.menu a:hover{background:var(--off)}
+.menu a[aria-current=page]{background:#0B0B0B;color:#fff}
+
+/* Sections */
+.sep{height:clamp(48px,6.5vw,96px);background:var(--sep)}
+.sec{padding-bottom:clamp(56px,7vw,100px)}
+.tab{display:inline-block;background:var(--red);color:#fff;font:800 clamp(22px,2.6vw,32px)/1.1 Outfit,sans-serif;padding:18px 48px 18px max(4vw,16px);margin-bottom:clamp(36px,5vw,64px)}
+.tab.green{background:var(--green)}
+.sec-intro{max-width:720px;color:var(--mute);margin:-28px 0 40px}
+
+/* Shadowed visual (accent offset) */
+.vis{position:relative;border-radius:24px;isolation:isolate}
+.vis::before{content:"";position:absolute;inset:0;border-radius:inherit;background:var(--red);transform:translate(-12px,12px);z-index:-1}
+.vis.g::before{background:var(--green)}
+.vis>.face{position:relative;border-radius:inherit;overflow:hidden;background:var(--s2);height:100%}
+
+/* Hero */
+.hero{padding-block:clamp(40px,6vw,90px)}
+.hero-in{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,.75fr);gap:clamp(32px,6vw,96px);align-items:center}
+.hero p.lead{font-size:clamp(17px,1.6vw,20px);color:var(--ink2);margin:24px 0 32px;max-width:560px}
+.chip{display:inline-block;background:var(--green);color:#fff;font-weight:700;font-size:14px;padding:6px 14px;border-radius:999px;margin-bottom:22px}
+.row{display:flex;flex-wrap:wrap;gap:14px}
+.hero .vis{aspect-ratio:421/560;max-width:420px;justify-self:end;width:100%}
+.hero .face img{width:100%;height:100%;object-fit:cover}
+.bubble{--m-body:#0B0B0B;--m-detail:#FFFFFF;position:absolute;right:-18px;bottom:28px;background:#fff;color:#0B0B0B;border-radius:18px;padding:14px 18px;font:800 18px/1.2 Outfit,sans-serif;display:flex;gap:10px;align-items:center}
+.bubble svg{width:30px;height:40px}
+
+/* Cards */
+.grid4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:36px 32px}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:36px 32px}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:40px}
+.card{display:flex;text-decoration:none;color:var(--ink);min-height:380px}
+.card>.face{flex:1;width:100%;height:auto}
+.card .face{display:flex;flex-direction:column;justify-content:flex-end;padding:24px;background:var(--card)}
+.card .ico{position:absolute;top:24px;left:24px;width:64px;height:64px;border-radius:18px;display:grid;place-items:center;background:var(--soft)}
+.card .ico svg{width:34px;height:34px;stroke:var(--ink);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.card h3{margin-bottom:8px}
+.card p{font-size:15px;color:var(--ink2);margin-bottom:18px}
+.pill{align-self:flex-start;background:var(--inv-bg);color:var(--inv-ink);font-weight:700;font-size:14px;padding:8px 16px;border-radius:999px}
+.card:hover .pill{background:var(--red);color:#fff}
+
+/* Media rows */
+.media{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(32px,6vw,96px);align-items:center;margin-bottom:64px}
+.media:last-child{margin-bottom:0}
+.media.rev .vis{order:2}
+.media .vis{aspect-ratio:16/10}
+.media .face{display:grid;place-items:center;background:var(--card2)}
+.play{width:88px;height:88px;border-radius:50%;background:#fff;display:grid;place-items:center}
+.play::after{content:"";border-left:26px solid var(--red);border-top:16px solid transparent;border-bottom:16px solid transparent;margin-left:8px}
+.tag{position:absolute;top:18px;left:18px;background:#0B0B0Bcc;color:#fff;padding:6px 12px;border-radius:8px;font-size:13px;font-weight:700}
+.media h3{font-size:clamp(24px,2.4vw,32px);margin-bottom:16px}
+.media p{color:var(--ink2);margin-bottom:24px}
+
+/* News (staggered) */
+.news{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:40px 48px;align-items:start}
+.news .card:nth-child(2){margin-top:80px}
+.news .card:nth-child(3){min-height:320px}
+.news .card:nth-child(4){margin-top:-40px}
+.date{font-size:13px;font-weight:700;color:var(--mute);margin-bottom:6px;text-transform:none}
+
+/* Stats */
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px}
+.stat{background:var(--s1);border-radius:24px;padding:28px;border-top:6px solid var(--red)}
+.stat:nth-child(even){border-color:var(--green)}
+.stat b{display:block;font:800 clamp(40px,4.4vw,58px)/1 Outfit,sans-serif;margin-bottom:12px;white-space:nowrap}
+.stat:nth-child(odd) b{color:var(--red)}
+.stat:nth-child(even) b{color:var(--green-txt)}
+.stat p{font-size:16px;color:var(--ink2)}
+
+/* CTA */
+.cta{color:#fff;background:var(--red);border-radius:32px;padding:clamp(32px,5vw,64px);display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:28px}
+.cta p{margin-top:10px;font-size:18px}
+
+/* Partners */
+.logos{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:20px}
+.logos div{aspect-ratio:16/10;background:var(--s1);border:1px solid var(--line);color:#666;border-radius:16px;display:grid;place-items:center;font-weight:700;font-size:14px}
+
+/* Interior page hero */
+.phero{padding-block:clamp(40px,5vw,72px);background:var(--bg)}
+.crumb{font-size:14px;color:var(--mute);margin-bottom:18px}
+.crumb a{text-decoration:none}
+.phero p{max-width:680px;color:var(--ink2);font-size:clamp(17px,1.6vw,20px);margin-top:20px}
+
+/* Info box, steps, faq */
+.box{background:var(--s1);border:2px solid var(--green);border-radius:24px;padding:clamp(24px,3vw,36px)}
+.box.red{border-color:var(--red)}
+.box h3{margin-bottom:10px}
+.box p+p{margin-top:10px}
+.tile{background:var(--s1);border-radius:24px;padding:28px;border:1px solid var(--line)}
+.tile .k{display:inline-block;background:var(--red);color:#fff;font-weight:700;font-size:13px;border-radius:999px;padding:4px 12px;margin-bottom:14px}
+.tile:nth-child(even) .k{background:var(--green)}
+.tile h3{margin-bottom:8px}
+.tile p{color:var(--ink2);font-size:16px}
+.steps{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px;counter-reset:s}
+.steps li{background:var(--s1);border-radius:24px;padding:28px;position:relative;counter-increment:s}
+.steps li::before{content:counter(s);display:grid;place-items:center;width:48px;height:48px;border-radius:50%;background:var(--red);font:800 22px Outfit,sans-serif;margin-bottom:16px;color:#fff}
+.steps li:nth-child(even)::before{background:var(--green)}
+.steps b{display:block;font:700 19px/1.25 Outfit,sans-serif;margin-bottom:6px}
+.steps span{display:block;font-size:13px;font-weight:700;color:var(--mute);margin-bottom:8px}
+.steps p{font-size:15px;color:var(--ink2)}
+details{background:var(--s1);border-radius:18px;padding:0 24px;margin-bottom:12px}
+summary{cursor:pointer;font:700 18px/1.3 Outfit,sans-serif;padding:20px 0;list-style:none;display:flex;justify-content:space-between;gap:16px}
+summary::after{content:"+";color:var(--red);font-size:26px;line-height:1}
+details[open] summary::after{content:"–"}
+details p{padding-bottom:20px;color:var(--ink2)}
+.split{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr);gap:48px;align-items:start}
+.list{margin:0;padding-left:20px;color:var(--ink2)}
+.list li{margin-bottom:8px}
+.phone{font:800 28px/1.2 Outfit,sans-serif;color:var(--green-txt);white-space:nowrap}
+
+/* Quiz */
+.quiz{background:var(--s1);border-radius:28px;padding:clamp(24px,4vw,48px);border:2px solid var(--line)}
+.qbar{height:8px;background:var(--s2);border-radius:99px;margin-bottom:28px;overflow:hidden}
+.qbar i{display:block;height:100%;background:var(--red);width:0;transition:width .3s}
+.qopts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.qopt{min-height:64px;text-align:left;background:var(--s2);color:var(--ink);border:2px solid var(--line);border-radius:16px;padding:16px 20px;font:600 17px/1.35 Figtree,sans-serif;cursor:pointer}
+.qopt:hover{border-color:var(--red)}
+.qres h3{font-size:clamp(26px,3vw,36px);margin:8px 0 14px}
+.qres .row{margin-top:24px}
+
+/* Team */
+.team{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:24px}
+.mem{background:var(--s1);border-radius:22px;padding:22px;text-align:left}
+.av{width:96px;height:96px;border-radius:50%;display:grid;place-items:center;margin-bottom:16px;overflow:hidden;border:3px solid var(--line)}
+.av svg{width:46px;height:62px;margin-top:8px}
+.av img{width:100%;height:100%;object-fit:cover}
+.av.a0{background:var(--red);--m-body:#fff;--m-detail:#0B0B0B;--m-shadow:#0B0B0B}
+.av.a1{background:var(--green);--m-body:#fff;--m-detail:#0B0B0B;--m-shadow:#0B0B0B}
+.av.a2{background:#0B0B0B;--m-body:#fff;--m-detail:#0B0B0B;--m-shadow:var(--red)}
+.av.a3{background:#FFE1E4;--m-body:#0B0B0B;--m-detail:#fff;--m-shadow:var(--red)}
+.av.a4{background:#DDEFE5;--m-body:#0B0B0B;--m-detail:#fff;--m-shadow:var(--green)}
+.av.a5{background:#00402A;--m-body:#fff;--m-detail:#0B0B0B;--m-shadow:var(--red)}
+.av.a6{background:#F5F2EC;--m-body:#0B0B0B;--m-detail:#fff;--m-shadow:var(--green)}
+.av.a7{background:#FF6B76;--m-body:#fff;--m-detail:#0B0B0B;--m-shadow:#0B0B0B}
+.av.a8{background:#2BD18A;--m-body:#0B0B0B;--m-detail:#fff;--m-shadow:#fff}
+.mem b{display:block;font-size:17px}
+.mem span{font-size:14px;color:var(--mute)}
+.quote{font:700 clamp(24px,3vw,36px)/1.25 Outfit,sans-serif;border-left:6px solid var(--red);padding-left:24px;margin-bottom:28px}
+
+/* Forms */
+form{display:grid;gap:20px}
+.f2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+label{display:grid;gap:8px;font-weight:600;font-size:15px}
+input,select,textarea{width:100%;font:16px Figtree,sans-serif;color:var(--ink);background:var(--s2);border:1.5px solid var(--line);border-radius:12px;padding:14px 16px;min-height:52px}
+textarea{min-height:140px;resize:vertical}
+input:focus,select:focus,textarea:focus{border-color:var(--red);outline:none}
+.seg{display:flex;flex-wrap:wrap;gap:10px;border:0;padding:0;margin:0}
+.seg legend{font-weight:600;font-size:15px;margin-bottom:8px;padding:0}
+.seg label{display:block}
+.seg input{position:absolute;opacity:0;width:1px;height:1px}
+.seg span{display:inline-block;padding:12px 20px;border-radius:999px;border:2px solid var(--line);cursor:pointer;font-weight:700;font-size:15px}
+.seg input:checked+span{background:var(--red);border-color:var(--red);color:#fff}
+.seg input:focus-visible+span{outline-color:var(--ink)}
+.seg input:focus-visible+span{outline:3px solid #fff;outline-offset:2px}
+.ok{display:none;color:#fff;background:var(--green);border-radius:18px;padding:20px 24px;font-weight:600}
+.ok.show{display:block}
+.formcard{background:var(--s1);border-radius:28px;padding:clamp(24px,4vw,48px)}
+.narrow{max-width:560px;margin:0 auto}
+
+/* Footer */
+footer{--m-body:#FFFFFF;--m-detail:#0B0B0B;--ink:#fff;--ink2:#DDD8D0;--mute:#B9B4AC;--line:#3A3A3A;color:#fff;background:#000;border-top:6px solid var(--red);padding-top:64px}
+.foot{display:grid;grid-template-columns:minmax(0,1.4fr) repeat(3,minmax(0,1fr));gap:40px;padding-bottom:48px}
+.foot h4{color:var(--red);font:700 17px Outfit,sans-serif;margin:0 0 14px}
+.foot ul{list-style:none;padding:0;margin:0;display:grid;gap:10px}
+.foot a{text-decoration:none;color:var(--ink2);font-size:15px}
+.foot a:hover{color:#fff}
+.foot p{color:var(--ink2);font-size:15px;margin-top:16px;max-width:340px}
+.legal{border-top:1px solid var(--line);padding-block:20px;font-size:13px;color:var(--mute)}
+
+.chips{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:36px}
+.chips button{background:var(--s2);color:var(--ink);border:2px solid var(--line);border-radius:999px;padding:10px 18px;font:700 15px Figtree,sans-serif;cursor:pointer;min-height:44px}
+.chips button[aria-pressed=true]{background:var(--red);border-color:var(--red);color:#fff}
+.fmt{display:inline-block;align-self:flex-start;background:var(--red);color:#fff;font-weight:700;font-size:13px;border-radius:999px;padding:4px 12px;margin-bottom:12px}
+.vis.g .fmt{background:var(--green)}
+.by{font-size:14px;color:var(--mute);margin-bottom:14px}
+.soon .pill{background:var(--s2);color:var(--mute)}
+.art{max-width:760px;margin:0 auto}
+.art .chapo{font-size:20px;color:var(--ink);font-weight:600;margin-bottom:28px}
+.art h3{font-size:26px;margin:36px 0 12px}
+.art p{color:var(--ink2);margin-bottom:14px}
+.art blockquote{margin:28px 0;border-left:6px solid var(--red);padding-left:22px;font:700 24px/1.3 Outfit,sans-serif}
+.art .src{font-size:14px;color:var(--mute);border-top:1px solid var(--line);padding-top:18px;margin-top:36px}
+/* Mixte */
+.sr{display:grid}.sr{font-size:0}
+.center{justify-content:center}
+.hand{font:700 clamp(24px,2.6vw,34px)/1.1 Caveat,cursive;color:var(--green-txt);transform:rotate(-2deg);display:inline-block}
+.hero2{position:relative;padding-block:clamp(56px,8vw,120px);background:var(--bg);overflow:hidden}
+.hero2-in{position:relative;text-align:center;display:flex;flex-direction:column;align-items:center}
+.h1big{font-size:clamp(44px,6.6vw,84px);font-weight:800;line-height:1.02}
+.hero2 .hand{margin:14px 0 20px}
+.lead2{max-width:640px;color:var(--ink2);font-size:clamp(17px,1.6vw,20px);margin-bottom:30px}
+.float{position:absolute}
+.f-left{left:max(4vw,16px);bottom:8%;display:flex;align-items:center;gap:10px;background:var(--s1);border:1px solid var(--line);border-radius:999px;padding:10px 18px;font-weight:700;font-size:14px;transform:rotate(-3deg)}
+.f-right{right:max(4vw,16px);top:10%;width:190px;aspect-ratio:3/4;transform:rotate(4deg)}
+.f-right img{width:100%;height:100%;object-fit:cover}
+.prof{background:var(--s1);border:1px solid var(--line);border-radius:24px;padding:28px;display:flex;flex-direction:column}
+.prof .pi{width:52px;height:52px;border-radius:50%;display:grid;place-items:center;color:#fff;font:800 20px Outfit,sans-serif;margin-bottom:16px;background:var(--red)}
+.prof:nth-child(2) .pi{background:var(--green)}.prof:nth-child(3) .pi{background:var(--inv-bg);color:var(--inv-ink)}
+.prof h3{margin-bottom:6px}.prof>p{color:var(--mute);font-size:15px;margin-bottom:16px}
+.prof ul{list-style:none;padding:0;margin:0 0 20px;display:grid;gap:12px}
+.prof li{display:grid;grid-template-columns:22px 1fr;gap:10px;font-size:15px;color:var(--ink2)}
+.prof li::before{content:"→";color:var(--red);font-weight:800}
+.prof .hand{margin-top:auto;align-self:flex-end;font-size:26px;text-decoration:none;color:var(--red)}
+.pull{margin-top:40px;display:flex;flex-wrap:wrap;gap:24px;align-items:center;justify-content:space-between;border:2px dashed var(--line);border-radius:24px;padding:24px 28px}
+.pull p{font:700 clamp(20px,2vw,26px)/1.3 Outfit,sans-serif}
+.pull .hand{font-size:28px;margin-left:8px}
+.how{list-style:none;padding:0;margin:0;counter-reset:h}
+.how li{display:grid;grid-template-columns:64px minmax(0,1fr) auto;gap:20px;align-items:center;padding:26px 0;border-top:1px solid var(--line);counter-increment:h}
+.how li:last-child{border-bottom:1px solid var(--line)}
+.how li::before{content:"0" counter(h);font:800 22px Outfit,sans-serif;color:var(--red)}
+.how b{font:800 clamp(20px,2.2vw,28px)/1.15 Outfit,sans-serif;text-transform:uppercase}
+.how .hand{font-size:24px;margin-left:12px}
+.how p{color:var(--mute);font-size:15px;margin-top:4px}
+.how a{font-weight:700;font-size:15px;white-space:nowrap}
+.band{background:var(--green);color:#fff;padding-block:clamp(56px,7vw,100px)}
+.band.deep{background:#00402A}
+.band h2{margin-bottom:10px}
+.band-intro{color:#E3F2EA;margin-bottom:36px;max-width:640px}
+.svc{background:var(--bg);color:var(--ink);border-radius:20px;padding:26px;text-decoration:none;display:flex;flex-direction:column;gap:8px;transition:transform .15s}
+.svc:hover{transform:translateY(-3px)}
+.svc .si{width:48px;height:48px;border-radius:14px;display:grid;place-items:center;background:var(--soft);margin-bottom:8px}
+.svc:first-child .si{background:var(--red)}
+.svc .si svg{width:26px;height:26px;fill:none;stroke:var(--ink);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.svc:first-child .si svg{stroke:#fff}
+.svc p{font-size:15px;color:var(--mute)}
+.svc span{margin-top:auto;color:var(--red);font-weight:700;font-size:15px}
+.teaser{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:48px;align-items:center;background:var(--s1);border-radius:32px;padding:clamp(28px,4vw,56px)}
+.checks{list-style:none;padding:0;margin:0;display:grid;gap:10px}
+.checks li{display:flex;gap:12px;align-items:flex-start}
+.checks li::before{content:"✓";flex:none;width:22px;height:22px;border-radius:6px;background:var(--green);color:#fff;display:grid;place-items:center;font-size:13px;font-weight:800;margin-top:2px}
+.checks.light li::before{background:#fff;color:var(--green)}
+.mini{background:var(--bg);border-radius:24px;padding:28px;border:2px solid var(--line)}
+.mini h3{margin-bottom:16px}
+.minichips{display:flex;flex-wrap:wrap;gap:10px}
+.minichips button{border:2px solid var(--line);background:none;color:var(--ink);border-radius:999px;padding:10px 16px;font:700 15px Figtree,sans-serif;cursor:pointer;min-height:44px}
+.minichips button[aria-pressed=true]{background:var(--inv-bg);color:var(--inv-ink);border-color:var(--inv-bg)}
+.split2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:56px;align-items:center}
+.btn-white-fixed{background:#fff;color:#0B0B0B}
+.btn-line-white{border-color:#fff;color:#fff}
+.btn-line-white:hover{background:#fff;color:#0B0B0B}
+.chat{position:relative;background:#fff;color:#0B0B0B;border-radius:24px;padding:28px;display:grid;gap:12px}
+.chat-tag{position:absolute;top:-14px;right:20px;background:var(--red);color:#fff;font-weight:700;font-size:13px;padding:6px 14px;border-radius:8px;transform:rotate(3deg)}
+.msg{background:#F1EEE8;border-radius:16px 16px 16px 4px;padding:14px 16px;font-size:15px;max-width:85%}
+.msg.me{justify-self:end;background:var(--green);color:#fff;border-radius:16px 16px 4px 16px}
+.chat .small{color:#6B665F}
+.together{display:grid;grid-template-columns:minmax(0,1.2fr) repeat(3,minmax(0,1fr));gap:20px;align-items:stretch}
+.together h2{font-size:clamp(28px,3vw,38px)}
+.tcard{background:var(--s1);border-radius:22px;padding:26px}
+.tcard b{display:block;font:800 clamp(38px,4vw,52px)/1 Outfit,sans-serif;margin-bottom:10px}
+.tcard p{color:var(--mute);font-size:15px}
+.tcard.dark{background:#00402A;color:#fff}.tcard.dark p{color:#CFE6DA}
+.timeline{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px;position:relative}
+.timeline::before{content:"";position:absolute;left:0;right:0;top:11px;height:2px;background:#ffffff40}
+.timeline li{position:relative;padding-top:40px}
+.timeline li::before{content:"";position:absolute;top:0;left:0;width:24px;height:24px;border-radius:50%;background:#00402A;border:3px solid #fff}
+.timeline li:first-child::before{background:var(--red);border-color:var(--red)}
+.timeline span{display:block;font-size:13px;font-weight:700;color:#BFE0CF;margin-bottom:6px}
+.timeline b{display:block;font:700 19px/1.25 Outfit,sans-serif;margin-bottom:6px}
+.timeline p{font-size:15px;color:#E3F2EA}
+.info{background:var(--s1);border-radius:22px;overflow:hidden;text-decoration:none;color:var(--ink);display:flex;flex-direction:column;border:1px solid var(--line);transition:transform .15s}
+.info:hover{transform:translateY(-3px)}
+.info .pic{position:relative;aspect-ratio:16/9;display:grid;place-items:center}
+.info .pic svg{width:70px;height:94px}
+.info .pic .fmt{position:absolute;top:14px;left:14px;background:#fff;color:#0B0B0B;margin:0}
+.info .txt{padding:20px 22px 24px}
+.info .txt h3{font-size:19px;margin-bottom:6px}
+.info .txt p{font-size:14px;color:var(--mute)}
+.p0{background:var(--red);--m-body:#fff;--m-detail:#0B0B0B;--m-shadow:#0B0B0B}
+.p1{background:var(--green);--m-body:#fff;--m-detail:#0B0B0B;--m-shadow:#0B0B0B}
+.p2{background:#EDEAE4;--m-body:#0B0B0B;--m-detail:#fff;--m-shadow:var(--green)}
+.p3{background:#00402A;--m-body:#fff;--m-detail:#0B0B0B;--m-shadow:var(--red)}
+.p4{background:#FFE1E4;--m-body:#0B0B0B;--m-detail:#fff;--m-shadow:var(--red)}
+.p5{background:#DDEFE5;--m-body:#0B0B0B;--m-detail:#fff;--m-shadow:var(--green)}
+.news-box{margin-top:48px;display:grid;grid-template-columns:auto minmax(0,1fr) minmax(0,1fr);gap:28px;align-items:center;border:2px solid var(--red);border-radius:26px;padding:28px 32px}
+.nb-m{width:52px;height:70px}
+.nb-form{display:flex;flex-wrap:wrap;gap:12px}
+.nb-form label{flex:1 1 200px}
+.nb-form .ok{flex-basis:100%}
+.final{background:var(--red);color:#fff;text-align:center;padding:clamp(64px,8vw,120px) max(4vw,16px);overflow:hidden}
+.stickers{display:flex;flex-wrap:wrap;justify-content:center;gap:14px;max-width:780px;margin:0 auto 40px}
+.stickers span{background:#fff;color:#0B0B0B;font:800 18px Outfit,sans-serif;padding:10px 18px;border-radius:6px;box-shadow:0 6px 0 #0003}
+.stickers span:nth-child(odd){transform:rotate(-5deg)}.stickers span:nth-child(even){transform:rotate(4deg)}
+.stickers span.g{background:var(--green);color:#fff}
+.final h2{font-size:clamp(34px,4.6vw,56px)}
+.final u{text-decoration-thickness:4px;text-underline-offset:8px}
+.final p{margin-top:12px;font-size:18px}
+@media (max-width:1000px){.f-right{display:none}.f-left{position:static;transform:none;margin-top:28px}.together{grid-template-columns:repeat(3,minmax(0,1fr))}.together>div:first-child{grid-column:1/-1}.timeline{grid-template-columns:repeat(2,minmax(0,1fr))}.timeline::before{display:none}.news-box{grid-template-columns:auto minmax(0,1fr)}.nb-form{grid-column:1/-1}}
+@media (max-width:640px){.h1big{font-size:36px;hyphens:none}.teaser,.split2,.together,.timeline{grid-template-columns:minmax(0,1fr)}.how li{grid-template-columns:44px minmax(0,1fr)}.how a{grid-column:2}.news-box{grid-template-columns:minmax(0,1fr)}.nb-m{display:none}.stickers span{font-size:15px}}
+/* Blocs avec marges */
+main{background:var(--sep);padding:clamp(10px,1.6vw,24px) clamp(10px,2.5vw,40px)}
+.view>*:not(.sep){background-color:var(--bg);border-radius:clamp(20px,2.4vw,36px);overflow:clip}
+.view>.band{background-color:var(--green)}
+.view>.band.deep{background-color:#00402A}
+.view>.final{background-color:var(--red)}
+.view>.wrap{max-width:none;padding-top:clamp(40px,5vw,72px)}
+.view>.wrap>.cta{max-width:var(--max);margin:0 auto}
+/* Points rouges, bouton noir */
+.sd{color:var(--red);font-weight:800}
+.chip .sd,.k .sd,.fmt .sd,.cta .sd,.final .sd,.band .sd{color:inherit}
+.btn-black{background:#0B0B0B;color:#fff;border-color:var(--bb,#fff)}
+:root[data-mode=light] .btn-black{--bb:#0B0B0B}
+.btn-black:hover{background:#262626}
+
+/* Menu du bas (mobile) */
+.tabbar{display:none}
+@media (max-width:860px){
+ body{padding-bottom:calc(76px + env(safe-area-inset-bottom))}
+ .burger{display:none!important}
+ .tabbar{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));position:fixed;left:0;right:0;bottom:0;z-index:40;background:var(--bg);border-top:1px solid var(--line);padding:6px 6px calc(6px + env(safe-area-inset-bottom))}
+ .tabbar a,.tabbar button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-height:58px;border:0;background:none;color:var(--mute);font:700 11px/1.1 Figtree,sans-serif;text-decoration:none;cursor:pointer;border-radius:14px;padding:4px 2px}
+ .tabbar svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+ .tabbar [aria-current=page],.tabbar button[aria-expanded=true]{color:var(--red)}
+ .tabbar .tb-rdv{color:#fff}
+ .tabbar .tb-rdv span.ring{width:46px;height:46px;border-radius:50%;background:var(--red);display:grid;place-items:center;margin-top:-22px;border:4px solid var(--bg)}
+ .tabbar .tb-rdv svg{stroke:#fff}
+ .tabbar .tb-rdv b{color:var(--ink)}
+ .menu{display:none;position:fixed;left:10px;right:10px;bottom:calc(84px + env(safe-area-inset-bottom));z-index:39;border-radius:22px;max-height:70vh;overflow:auto}
+ .menu.open{display:block}
+ .menu ul{padding:14px}
+ .menu a{font-size:17px;padding:14px 18px}
+}
+[hidden]{display:none!important}
+.view{animation:fade .35s ease}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.view{animation:none}body,.top,.card .face,.tile,.box,details,.stat,.formcard,.quiz,.mem{transition:none}.btn,.qbar i{transition:none}}
+
+@media (max-width:1000px){
+ .grid4,.stats,.steps{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .logos{grid-template-columns:repeat(3,minmax(0,1fr))}
+ .foot{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .grid3{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .split{grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width:860px){
+ .burger{display:block}
+ .menu{display:none}
+ .menu.open{display:block}
+ .menu ul{flex-direction:column;align-items:stretch}
+ .top-act .btn{display:none}
+}
+@media (max-width:640px){
+ .hero-in,.media,.news,.grid2,.grid3,.f2,.qopts{grid-template-columns:minmax(0,1fr)}
+ .hero .vis{justify-self:center;max-width:300px}
+ .media.rev .vis{order:0}
+ .news .card:nth-child(n){margin-top:0}
+ .grid4,.stats,.steps{grid-template-columns:minmax(0,1fr)}
+ .logos{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .foot{grid-template-columns:minmax(0,1fr)}
+ .logo-txt{font-size:22px}
+ .bubble{right:-8px}
+ .card{min-height:260px}
+ .lang{display:none}
+ .vis::before{transform:translate(-8px,8px)}
+ .top-act{gap:10px}
+}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+ <defs>
+  <symbol id="mascotte" viewBox="0 0 60 80">
+   <g style="fill:var(--m-shadow,#FF0013)" transform="translate(-5 0)"><rect x="10" y="4" width="22" height="58" rx="4"/><rect x="10" y="4" width="40" height="16" rx="8"/><rect x="10" y="22" width="36" height="14" rx="7"/><rect x="10" y="38" width="42" height="24" rx="11"/></g>
+   <g style="fill:var(--m-body)"><rect x="10" y="4" width="22" height="58" rx="4"/><rect x="10" y="4" width="40" height="16" rx="8"/><rect x="10" y="22" width="36" height="14" rx="7"/><rect x="10" y="38" width="42" height="24" rx="11"/></g>
+   <path d="M19 53q3.5-5.5 7 0M34 53q3.5-5.5 7 0" style="stroke:var(--m-detail)" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+   <path d="M22 62v11h-4M37 62v11h4" style="stroke:var(--m-body)" stroke-width="3.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+ </defs>
+</svg>
+
+<header class="top">
+ <div class="wrap top-in">
+  <a class="logo" href="#accueil" aria-label="Educati'on ! – accueil">
+   <svg aria-hidden="true"><use href="#mascotte"/></svg>
+   <span class="logo-txt">Educati<span class="on">'on !</span></span>
+  </a>
+  <div class="top-act">
+   <button class="mode" id="modeBtn" type="button" aria-label="Passer en mode clair"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" id="modeIco"></svg></button>
+   <select class="lang" aria-label="Langue"><option>FR</option><option>EN</option></select>
+   <a class="acc" href="#connexion" aria-label="Mon compte"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 4a3.5 3.5 0 1 1 0 7 3.5 3.5 0 0 1 0-7zm0 14c-2 0-4.4-.8-6.1-2.9C7.5 15.8 9.7 15 12 15s4.4.8 6.1 2.1C16.4 19.2 14 20 12 20z"/></svg></a>
+   <a class="btn btn-red" href="#rendez-vous">Prendre rendez-vous</a>
+   <button class="burger" id="burger" aria-expanded="false" aria-controls="menu" aria-label="Ouvrir le menu">☰</button>
+  </div>
+ </div>
+ <nav class="menu" id="menu" aria-label="Menu principal">
+  <ul class="wrap">
+   <li><a href="#trouve-ta-voie">Trouve ta voie</a></li>
+   <li><a href="#aides">Aides &amp; démarches</a></li>
+   <li><a href="#bourses">Bourses</a></li>
+   <li><a href="#concours">Concours &amp; examens</a></li>
+   <li><a href="#bien-etre">Bien-être</a></li>
+   <li><a href="#articles">Articles</a></li>
+   <li><a href="#qui-sommes-nous">Qui sommes-nous ?</a></li>
+  </ul>
+ </nav>
+</header>
+
+
+<nav class="tabbar" aria-label="Menu mobile">
+ <a href="#accueil" data-tab><svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>Accueil</a>
+ <a href="#trouve-ta-voie" data-tab><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/></svg>Ma voie</a>
+ <a href="#rendez-vous" data-tab class="tb-rdv"><span class="ring"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></svg></span><b>Rdv</b></a>
+ <a href="#articles" data-tab><svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>Articles</a>
+ <button type="button" id="tbMenu" aria-expanded="false" aria-controls="menu"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>Menu</button>
+</nav>
+<main id="main">
+
+<!-- ============ ACCUEIL ============ -->
+<div class="view" data-view="accueil">
+ <!-- HERO -->
+ <section class="hero2">
+  <div class="wrap hero2-in">
+   <span class="chip">Orientation, aides, accompagnement</span>
+   <h1 class="h1big">Qu'est-ce que tu<br>veux faire <span class="on">?</span></h1>
+   <p class="hand">C'est toi qui choisis, pas ton bac.</p>
+   <p class="lead2">Formations, métiers, Parcoursup, bourses : Educati'on ! t'informe et t'accompagne vers les études supérieures. Parce qu'aucun parcours n'est trop tard, trop improbable ou réservé à d'autres.</p>
+   <div class="row center">
+    <a class="btn btn-black" href="#trouve-ta-voie">Faire le quiz d'orientation</a>
+    <a class="btn btn-red" href="#rendez-vous">Parler à un Guide</a>
+   </div>
+   <p class="small" style="margin-top:22px">Gratuit, sans publicité, sur place, par téléphone ou en visio</p>
+   <div class="float f-left">Pour les 15–26 ans et les adultes</div>
+   <div class="float f-right vis g"><div class="face"><img src="assets/photo-livres.jpg" alt="Des livres et une paire de lunettes posés sur un carnet"></div></div>
+  </div>
+ </section>
+
+ <div class="sep"></div>
+ <section class="sec">
+  <h2 class="tab">Plusieurs chemins, un même objectif</h2>
+  <div class="wrap">
+   <p class="sec-intro">Que tu sois au lycée, déjà étudiant ou adulte, il y a une voie pour toi.</p>
+   <div class="grid3" id="profils"></div>
+  </div>
+ </section>
+
+ <div class="sep"></div>
+ <section class="sec">
+  <h2 class="tab green">Ton avenir ne devrait pas dépendre de ton origine</h2>
+  <div class="wrap">
+   <div class="stats">
+    <div class="stat"><b>1 sur 2</b><p>étudiants de première année de licence se réorientent ou échouent.</p></div>
+    <div class="stat"><b>35 %</b><p>d'accès au supérieur pour les familles modestes, contre 80 % pour les foyers aisés.</p></div>
+    <div class="stat"><b>62 %</b><p>des jeunes se disent stressés et mal accompagnés dans leur orientation.</p></div>
+    <div class="stat"><b>0 pub</b><p>Aucune publicité ni école privée sur notre site. Juste de l'info fiable.</p></div>
+   </div>
+   <p class="sample">Sources : ministère de l'Enseignement supérieur (réussite en licence, session 2024), Insee (France, portrait social), CESE.</p>
+   <div class="pull"><p>« Avec ton bac, ce n'est pas pour toi. » <span class="hand">On veut que plus personne n'entende ça.</span></p><a class="btn btn-red" href="#qui-sommes-nous">Notre histoire</a></div>
+  </div>
+ </section>
+
+ <div class="sep"></div>
+ <section class="sec">
+  <h2 class="tab">Comment ça marche ?</h2>
+  <div class="wrap"><ol class="how" id="how"></ol></div>
+ </section>
+
+ <section class="band">
+  <div class="wrap">
+   <h2>Ce qu'on fait pour toi</h2>
+   <p class="band-intro">Toutes les infos et l'accompagnement au même endroit.</p>
+   <div class="grid3" id="services"></div>
+  </div>
+ </section>
+
+ <section class="sec" style="padding-top:clamp(56px,7vw,100px)">
+  <div class="wrap">
+   <div class="teaser">
+    <div>
+     <h2>Pas sûr de ce qui te plaît ?</h2>
+     <p class="mute" style="margin:16px 0 20px">Choisis ce qui te parle. On te propose des pistes de formations et de métiers en 2 minutes.</p>
+     <ul class="checks"><li>Gratuit et sans inscription</li><li>Des pistes concrètes, pas une étiquette</li><li>Un Guide pour en parler ensuite</li></ul>
+    </div>
+    <div class="mini">
+     <p class="small" style="margin-bottom:6px">Question 1</p>
+     <h3>Qu'est-ce qui te donne envie ?</h3>
+     <div class="minichips" id="minichips"></div>
+     <div class="row" style="justify-content:space-between;align-items:center;margin-top:20px"><span class="small" id="miniCount">0 choix</span><a class="btn btn-red" href="#trouve-ta-voie">Voir mes pistes</a></div>
+    </div>
+   </div>
+  </div>
+ </section>
+
+ <section class="band">
+  <div class="wrap split2">
+   <div>
+    <h2>Toi aussi, tu es passé par là ?</h2>
+    <p class="band-intro">On t'a dit que ce n'était « pas pour toi » ? Lucie aussi. Aujourd'hui, elle est en BUT MMI.</p>
+    <ul class="checks light"><li>Bac pro, on lui conseillait un BTS MCO</li><li>Elle a demandé de l'aide à Educati'on !</li><li>Admise au BUT MMI de Bobigny dès la première vague</li></ul>
+    <div class="row" style="margin-top:28px"><a class="btn btn-white-fixed" href="#article-lucie">Lire son histoire</a><a class="btn btn-line-white" href="#rendez-vous">Parler à un Guide</a></div>
+   </div>
+   <div class="chat">
+    <span class="chat-tag">Histoire vraie</span>
+    <p class="msg">J'étais perdue dans Parcoursup. Mes profs me proposaient un BTS MCO, mais ça ne me plaisait pas du tout…</p>
+    <p class="msg me">On a regardé ensemble ce qui te plaît vraiment. Et si tu tentais le BUT MMI ?</p>
+    <p class="msg">J'ai été prise dès la première vague. Ça a été la meilleure décision de toute ma scolarité.</p>
+    <div class="row" style="justify-content:space-between;align-items:center;margin-top:8px"><span class="small">Lucie, 20 ans, BUT MMI</span><a class="btn btn-red" style="min-height:40px;padding:8px 18px" href="#rendez-vous">À moi aussi</a></div>
+   </div>
+  </div>
+ </section>
+
+ <section class="sec" style="padding-top:clamp(56px,7vw,100px)">
+  <div class="wrap together">
+   <div><h2>Ensemble, on ouvre des portes.</h2><a class="btn btn-line" href="#qui-sommes-nous" style="margin-top:20px">Qui sommes-nous ?</a></div>
+   <div class="tcard"><b class="on">6</b><p>rubriques pour tout comprendre</p></div>
+   <div class="tcard"><b style="color:var(--green-txt)">100 %</b><p>gratuit pour les jeunes</p></div>
+   <div class="tcard dark"><b>3</b><p>façons de nous voir : sur place, téléphone, visio</p></div>
+  </div>
+ </section>
+
+ <section class="band deep">
+  <div class="wrap">
+   <h2>Les dates à ne pas rater</h2>
+   <p class="band-intro">Calendrier indicatif : vérifie toujours les dates officielles.</p>
+   <ol class="timeline" id="timeline"></ol>
+  </div>
+ </section>
+
+ <div class="sep"></div>
+ <section class="sec">
+  <h2 class="tab">Les dernières infos</h2>
+  <div class="wrap">
+   <div class="row" style="justify-content:space-between;align-items:center;margin-bottom:24px"><div class="chips" id="homeChips" role="group" aria-label="Filtrer par format" style="margin:0"></div><a class="btn btn-line" href="#articles">Tous les articles</a></div>
+   <div class="grid3" id="infos"></div>
+   <div class="news-box">
+    <svg class="nb-m" aria-hidden="true"><use href="#mascotte"/></svg>
+    <div><h3>Reçois les infos qui comptent</h3><p class="mute">Les dates Parcoursup, les bourses, nos ateliers. Un mail par mois, pas plus.</p></div>
+    <form data-ok="okNews" class="nb-form"><label class="sr">E-mail<input type="email" required placeholder="ton@email.fr" autocomplete="email"></label><button class="btn btn-red" type="submit">Je m'abonne</button><p class="ok" id="okNews" role="status">Démo : l'inscription sera reliée au site final.</p></form>
+   </div>
+  </div>
+ </section>
+
+ <div class="sep"></div>
+ <section class="sec">
+  <h2 class="tab green">Avant de te lancer</h2>
+  <div class="wrap split">
+   <div id="faqHome"></div>
+   <div class="box"><h3>Une autre question ?</h3><p>Nos Guides te répondent, sans jugement et gratuitement.</p><p><a class="btn btn-red" href="#rendez-vous" style="margin-top:12px">Prendre rendez-vous</a></p></div>
+  </div>
+ </section>
+
+ <section class="final">
+  <div class="stickers" aria-hidden="true"><span>BTS</span><span class="g">BUT</span><span>Licence</span><span class="g">Alternance</span><span>Master</span><span class="g">Prépa</span><span>Reprise d'études</span><span>Bac en candidat libre</span></div>
+  <h2>Prêt à trouver <u>ta voie</u> ?</h2>
+  <p>Fais le quiz ou parle directement à un Guide.</p>
+  <div class="row center" style="margin-top:28px"><a class="btn btn-white-fixed" href="#trouve-ta-voie">Faire le quiz</a><a class="btn btn-line-white" href="#rendez-vous">Prendre rendez-vous</a></div>
+ </section>
+</div>
+
+<!-- ============ TROUVE TA VOIE ============ -->
+<div class="view" data-view="trouve-ta-voie" hidden>
+ <section class="phero"><div class="wrap">
+  <p class="crumb"><a href="#accueil">Accueil</a> › Trouve ta voie</p>
+  <h1>Trouve <span class="on">ta voie</span></h1>
+  <p>Formations, fiches métiers et quiz d'orientation : on ne te demande pas quel bac tu as fait, mais ce que tu as envie de faire.</p>
+ </div></section>
+
+ <div class="sep"></div>
+ <section class="sec">
+  <h2 class="tab">Le quiz d'orientation</h2>
+  <div class="wrap"><div class="quiz" id="quiz" aria-live="polite"></div></div>
+ </section>
+
+ <div class="sep"></div>
+ <section class="sec">
+  <h2 class="tab green">Les formations</h2>
+  <div class="wrap grid3">
+   <div class="tile"><span class="k">2 ans, bac+2</span><h3>BTS</h3><p>Formation courte et professionnelle, souvent en lycée, avec des stages. Possible en alternance.</p></div>
+   <div class="tile"><span class="k">3 ans, bac+3</span><h3>BUT</h3><p>En IUT : de la pratique, des projets et des stages. Il remplace l'ancien DUT.</p></div>
+   <div class="tile"><span class="k">3 ans, bac+3</span><h3>Licence</h3><p>À l'université, plus théorique. On y entre avec tous les bacs : la licence n'est pas réservée au bac général.</p></div>
+   <div class="tile"><span class="k">2 ans, bac+5</span><h3>Master</h3><p>Après une licence, pour te spécialiser et viser des métiers plus qualifiés ou la recherche.</p></div>
+   <div class="tile"><span class="k">2 ans</span><h3>Classe prépa</h3><p>Rythme intense pour préparer les concours des grandes écoles (ingénieur, commerce, ENS…).</p></div>
+   <div class="tile"><span class="k">À tout moment</span><h3>Passerelles</h3><p>Réorientation en cours d'année, admissions parallèles, reprise d'études : un parcours n'est pas forcément linéaire.</p></div>
+  </div>
+ </section>
+
+ <div class="sep"></div>
+ <section class="sec">
+  <h2 class="tab">Fiches métiers</h2>
+  <div class="wrap grid4" id="metiers"></div>
+  <div class="wrap"><p class="sample">Fiches d'exemple, à compléter avec vos contenus.</p></div>
+ </section>
+</div>
+
+<!-- ============ AIDES ============ -->
+<div class="view" data-view="aides" hidden>
+ <section class="phero"><div class="wrap">
+  <p class="crumb"><a href="#accueil">Accueil</a> › Aides &amp; démarches</p>
+  <h1>Aides <span class="on">&amp; démarches</span></h1>
+  <p>Parcoursup, aides financières, reprise d'études, bac en candidat libre : toutes les infos utiles au même endroit, expliquées simplement.</p>
+ </div></section>
+
+ <div class="sep"></div>
+ <section class="sec">
+  <h2 class="tab">Parcoursup, étape par étape</h2>
+  <div class="wrap">
+   <ol class="steps">
+    <li><span>Décembre – janvier</span><b>Découvre les formations</b><p>Explore le catalogue, va aux journées portes ouvertes et note ce qui te plaît.</p></li>
+    <li><span>Mi-janvier – mi-mars</span><b>Inscris-toi et fais tes vœux</b><p>Crée ton dossier et formule tes vœux. Ajoute aussi ceux qui te font vraiment envie.</p></li>
+    <li><span>Début avril</span><b>Complète et confirme</b><p>Lettres de motivation, pièces du dossier : tout doit être confirmé avant la date limite.</p></li>
+    <li><span>À partir de juin</span><b>Reçois tes réponses</b><p>Réponds aux propositions dans les délais. Pas de proposition ? La phase complémentaire existe.</p></li>
+   </ol>
+   <p class="sample">Calendrier indicatif : vérifie toujours les dates officielles sur parcoursup.gouv.fr.</p>
+  </div>
+ </section>
+
+ <div class="sep"></div>
+ <section class="sec">
+  <h2 class="tab green">Les aides financières</h2>
+  <div class="wrap grid4">
+   <div class="tile"><span class="k">Crous</span><h3>Bourse sur critères sociaux</h3><p>Selon les revenus de ta famille. <a href="#bourses">Tout savoir sur les bourses</a>.</p></div>
+   <div class="tile"><span class="k">CAF</span><h3>Aide au logement</h3><p>Les APL peuvent réduire ton loyer, même si tu n'es pas boursier.</p></div>
+   <div class="tile"><span class="k">Crous</span><h3>Aide d'urgence</h3><p>En cas de difficulté soudaine, une aide ponctuelle peut être accordée après un rendez-vous avec un assistant social.</p></div>
+   <div class="tile"><span class="k">Région</span><h3>Transport et équipement</h3><p>Beaucoup de régions aident pour les transports ou l'ordinateur. Renseigne-toi auprès de la tienne.</p></div>
+  </div>
+ </section>
+
+ <div class="sep"></div>
+ <section class="sec">
+  <h2 class="tab">Reprendre ses études</h2>
+  <div class="wrap split">
+   <div>
+    <h3 style="font-size:28px;margin-bottom:16px">Il n'est jamais trop tard</h3>
+    <p class="mute">Beaucoup d'adultes n'ont pas pu faire d'études plus tôt, pour des raisons financières, familiales ou autres, et pensent qu'il est trop tard. C'est faux : tu peux passer le bac général ou technologique en candidat libre, puis t'inscrire sur Parcoursup comme tout le monde.</p>
+    <ul class="list" style="margin-top:20px">
+     <li>Inscription au bac auprès de ton académie, généralement à l'automne.</li>
+     <li>Tu prépares les épreuves seul ou avec des cours (CNED, cours du soir…).</li>
+     <li>Une fois le bac en poche, Parcoursup t'ouvre toutes les formations.</li>
+    </ul>
+   </div>
+   <div class="box">
+    <h3>Bon à savoir</h3>
+    <p>Il existe aussi des diplômes d'accès aux études universitaires (DAEU) et la validation des acquis (VAE) pour faire reconnaître ton expérience.</p>
+    <p><a class="btn btn-green" href="#rendez-vous" style="margin-top:12px">En parler à un conseiller</a></p>
+   </div>
+  </div>
+ </section>
+</div>
+
+<!-- ============ BOURSES ============ -->
+<div class="view" data-view="bourses" hidden>
+ <section class="phero"><div class="wrap">
+  <p class="crumb"><a href="#accueil">Accueil</a> › Bourses</p>
+  <h1>Les <span class="on">bourses</span></h1>
+  <p>La bourse sur critères sociaux aide à financer tes études. Voici qui peut en bénéficier et comment faire ta demande, sans te perdre dans les démarches.</p>
+ </div></section>
+
+ <div class="sep"></div>
+ <section class="sec">
+  <h2 class="tab">Qui peut en bénéficier ?</h2>
+  <div class="wrap split">
+   <ul class="list">
+    <li>Être inscrit dans une formation habilitée à recevoir des boursiers (BTS, BUT, licence, master…).</li>
+    <li>Avoir moins de 28 ans au 1<sup>er</sup> septembre lors de la première demande.</li>
+    <li>Le montant dépend des revenus de ta famille, du nombre d'enfants à charge et de la distance domicile – lieu d'études : c'est l'échelon, de 0 bis à 7.</li>
+    <li>L'assiduité aux cours et aux examens est obligatoire.</li>
+   </ul>
+   <div class="box"><h3>Simule avant de demander</h3><p>Le simulateur officiel sur etudiant.gouv.fr te donne une idée de ton échelon en quelques minutes.</p></div>
+  </div>
+ </section>
+
+ <div class="sep"></div>
+ <section class="sec">
+  <h2 class="tab green">Faire sa demande</h2>
+  <div class="wrap">
+   <ol class="steps">
+    <li><span>Avant tout</span><b>Rassemble tes documents</b><p>Avis fiscal de tes parents, pièce d'identité, RIB à ton nom.</p></li>
+    <li><span>En début d'année</span><b>Remplis ton DSE</b><p>Le dossier social étudiant, sur messervices.etudiant.gouv.fr. N'attends pas tes résultats Parcoursup.</p></li>
+    <li><span>Après l'envoi</span><b>Envoie les justificatifs</b><p>Le Crous te demande les pièces manquantes par mail : surveille ta boîte.</p></li>
+    <li><span>Avant la rentrée</span><b>Reçois ta notification</b><p>Elle indique ton échelon. Les versements commencent à la rentrée.</p></li>
+   </ol>
+   <p class="sample">Vérifie la date limite de chaque campagne sur messervices.etudiant.gouv.fr.</p>
+  </div>
+ </section>
+
+ <div class="sep"></div>
+ <section class="sec">
+  <h2 class="tab">Questions fréquentes</h2>
+  <div class="wrap">
+   <details><summary>Je ne sais pas encore où je serai à la rentrée, je peux faire ma demande ?</summary><p>Oui. Le DSE se fait avant les résultats de Parcoursup : tu indiques tes vœux et tu mettras à jour ton inscription ensuite.</p></details>
+   <details><summary>Dois-je refaire ma demande chaque année ?</summary><p>Oui, la demande de bourse se renouvelle chaque année avec un nouveau dossier social étudiant.</p></details>
+   <details><summary>Puis-je travailler en étant boursier ?</summary><p>Oui, un job étudiant est possible, à condition de rester assidu à tes cours et à tes examens.</p></details>
+   <details><summary>Je ne comprends pas mon dossier, qui peut m'aider ?</summary><p>Nos conseillers t'accompagnent pas à pas. <a href="#rendez-vous">Prends rendez-vous</a>, c'est gratuit.</p></details>
+  </div>
+ </section>
+</div>
+
+<!-- ============ CONCOURS ============ -->
+<div class="view" data-view="concours" hidden>
+ <section class="phero"><div class="wrap">
+  <p class="crumb"><a href="#accueil">Accueil</a> › Concours &amp; examens</p>
+  <h1>Concours <span class="on">&amp; examens</span></h1>
+  <p>Des ateliers pour te préparer aux concours, soigner ton CV, ta lettre de motivation et ton portfolio. En petit groupe, avec des pros.</p>
+ </div></section>
+
+ <div class="sep"></div>
+ <section class="sec">
+  <h2 class="tab">Nos ateliers</h2>
+  <div class="wrap grid4" id="ateliers"></div>
+ </section>
+
+ <div class="sep"></div>
+ <section class="sec">
+  <h2 class="tab green">Prochaines sessions</h2>
+  <div class="wrap">
+   <div id="sessions"></div>
+   <p class="sample">Sessions d'exemple, à remplacer par votre vrai planning.</p>
+  </div>
+ </section>
+
+ <div class="sep"></div>
+ <section class="sec">
+  <h2 class="tab">Nos conseils</h2>
+  <div class="wrap grid3">
+   <div class="tile"><span class="k">Méthode</span><h3>Commence tôt</h3><p>Un peu chaque semaine vaut mieux qu'une révision intensive la veille.</p></div>
+   <div class="tile"><span class="k">Entraînement</span><h3>Fais des sujets</h3><p>Les annales t'apprennent le format, le timing et les attentes du jury.</p></div>
+   <div class="tile"><span class="k">Équilibre</span><h3>Garde du temps pour toi</h3><p>Sommeil, sport, pauses : ça fait partie de la préparation. <a href="#bien-etre">Nos ressources bien-être</a>.</p></div>
+  </div>
+ </section>
+</div>
+
+<!-- ============ BIEN-ÊTRE ============ -->
+<div class="view" data-view="bien-etre" hidden>
+ <section class="phero"><div class="wrap">
+  <p class="crumb"><a href="#accueil">Accueil</a> › Bien-être</p>
+  <h1>Prendre soin <span class="on">de toi</span></h1>
+  <p>Stress, fatigue, solitude : les études peuvent être lourdes. Tu n'as pas à gérer ça seul. Voici des ressources et des contacts pour t'aider.</p>
+ </div></section>
+
+ <div class="sep"></div>
+ <section class="sec">
+  <h2 class="tab green">Besoin de parler maintenant ?</h2>
+  <div class="wrap grid3">
+   <div class="box"><h3>3114</h3><p class="phone">3114</p><p>Numéro national de prévention du suicide. Gratuit, 24 h/24 et 7 j/7, avec des professionnels formés.</p></div>
+   <div class="box"><h3>Fil Santé Jeunes</h3><p class="phone">0 800 235 236</p><p>Pour les 12–25 ans. Écoute anonyme et gratuite, tous les jours de 9 h à 23 h, aussi par tchat.</p></div>
+   <div class="box"><h3>CNAÉ (étudiants)</h3><p class="phone">0 800 737 800</p><p>Écoute et accompagnement des étudiants. Gratuit et confidentiel.</p></div>
+  </div>
+  <div class="wrap"><p class="sample">En cas d'urgence vitale, appelle le 15 ou le 112.</p></div>
+ </section>
+
+ <div class="sep"></div>
+ <section class="sec">
+  <h2 class="tab">Nos ressources</h2>
+  <div class="wrap grid4">
+   <div class="tile"><span class="k">Examens</span><h3>Gérer le stress</h3><p>Respiration, organisation, pauses : des techniques simples avant et pendant les épreuves.</p></div>
+   <div class="tile"><span class="k">Rythme</span><h3>Bien dormir</h3><p>Le sommeil aide à retenir ce que tu apprends. Quelques habitudes qui changent tout.</p></div>
+   <div class="tile"><span class="k">Lien social</span><h3>Ne pas rester seul</h3><p>Nouvelle ville, nouveau rythme : où rencontrer du monde et à qui parler.</p></div>
+   <div class="tile"><span class="k">Budget</span><h3>Moins d'angoisse d'argent</h3><p>Faire un budget, connaître les aides : <a href="#aides">voir les aides</a>.</p></div>
+  </div>
+ </section>
+
+ <div class="wrap" style="padding-bottom:clamp(56px,7vw,100px)">
+  <div class="cta" style="background:var(--green)">
+   <div><h2>Parler à un conseiller Educati'on</h2><p>On t'écoute et on t'oriente vers le bon interlocuteur.</p></div>
+   <a class="btn btn-white" href="#rendez-vous">Prendre rendez-vous</a>
+  </div>
+ </div>
+</div>
+
+<!-- ============ QUI SOMMES-NOUS ============ -->
+<div class="view" data-view="qui-sommes-nous" hidden>
+ <section class="phero"><div class="wrap">
+  <p class="crumb"><a href="#accueil">Accueil</a> › Qui sommes-nous ?</p>
+  <h1>Qui <span class="on">sommes-nous ?</span></h1>
+  <p>Educati'on ! est une ONG qui informe et accompagne les jeunes et les adultes vers les études supérieures. L'info et l'accompagnement, au même endroit.</p>
+ </div></section>
+
+ <div class="sep"></div>
+ <section class="sec">
+  <h2 class="tab">Notre histoire</h2>
+  <div class="wrap split">
+   <div>
+    <p class="quote">« Avec ton bac, ce n'est pas pour toi. »</p>
+    <p class="mute">C'est ce qu'a entendu une lycéenne de STMG qui rêvait de création et de numérique. On lui conseillait un BTS commerce. Elle a quand même tenté le BUT MMI, et aujourd'hui elle y est. Elle fait partie de notre équipe.</p>
+    <p class="mute" style="margin-top:14px">Son histoire n'est pas un cas isolé. Souvent, ce n'est pas une question de niveau, mais d'information. Alors on a créé Educati'on !, pour qu'on ne demande plus « Tu as fait quel bac ? », mais « Qu'est-ce que tu veux faire ? ».</p>
+   </div>
+   <div class="box red">
+    <h3>Nos valeurs</h3>
+    <ul class="list"><li><b>L'égalité des chances</b> : aucun parcours n'est réservé à d'autres.</li><li><b>L'accessibilité</b> : une info claire, gratuite, sans publicité.</li><li><b>L'accompagnement</b> : on reste à tes côtés jusqu'au bout de tes démarches.</li></ul>
+   </div>
+  </div>
+ </section>
+
+ <div class="sep"></div>
+ <section class="sec">
+  <h2 class="tab green">Nos missions</h2>
+  <div class="wrap grid4">
+   <div class="tile"><span class="k">Informer</span><h3>Rendre l'info accessible</h3><p>Répertorier le plus de filières possible : BTS, BUT, licences, masters, passerelles.</p></div>
+   <div class="tile"><span class="k">Aider</span><h3>Sessions d'information</h3><p>Montrer à chacun les aides auxquelles il a droit et l'accompagner dans ses demandes.</p></div>
+   <div class="tile"><span class="k">Préparer</span><h3>Ateliers concours</h3><p>Préparer les concours, le CV, la lettre de motivation et le portfolio.</p></div>
+   <div class="tile"><span class="k">Écouter</span><h3>Bien-être</h3><p>Aider les étudiants à prendre soin de leur santé mentale pour étudier sereinement.</p></div>
+  </div>
+ </section>
+
+ <div class="sep"></div>
+ <section class="sec">
+  <h2 class="tab">L'équipe</h2>
+  <div class="wrap team" id="team"></div>
+ </section>
+
+ <div class="wrap" style="padding-bottom:clamp(56px,7vw,100px)">
+  <div class="cta">
+   <div><h2>Une question, un partenariat ?</h2><p>Écris-nous, on te répond rapidement.</p></div>
+   <a class="btn btn-white" href="#contact">Nous contacter</a>
+  </div>
+ </div>
+</div>
+
+<!-- ============ CONTACT ============ -->
+<div class="view" data-view="contact" hidden>
+ <section class="phero"><div class="wrap">
+  <p class="crumb"><a href="#accueil">Accueil</a> › Nous contacter</p>
+  <h1>Nous <span class="on">contacter</span></h1>
+  <p>Une question sur ton orientation, une proposition de partenariat ? Écris-nous.</p>
+ </div></section>
+ <div class="sep"></div>
+ <section class="sec">
+  <h2 class="tab">Écris-nous</h2>
+  <div class="wrap split">
+   <div class="formcard">
+    <form data-ok="okContact">
+     <div class="f2"><label>Prénom et nom<input name="nom" required autocomplete="name"></label><label>E-mail<input type="email" name="mail" required autocomplete="email"></label></div>
+     <label>Objet<select name="objet"><option>Question sur mon orientation</option><option>Aides et bourses</option><option>Partenariat</option><option>Autre</option></select></label>
+     <label>Message<textarea name="message" required></textarea></label>
+     <div><button class="btn btn-red" type="submit">Envoyer</button></div>
+     <p class="ok" id="okContact" role="status">Merci ! Ce formulaire est une démo : le message n'est pas encore envoyé, il sera relié au site final.</p>
+    </form>
+   </div>
+   <div class="box">
+    <h3>Nos coordonnées</h3>
+    <p>E-mail : action'on@gmail.com</p>
+    <p>Téléphone : 01 01 01 01 01</p>
+    <p class="small">Coordonnées provisoires de la maquette.</p>
+    <p style="margin-top:16px">Instagram, TikTok, YouTube, LinkedIn</p>
+   </div>
+  </div>
+ </section>
+</div>
+
+<!-- ============ RENDEZ-VOUS ============ -->
+<div class="view" data-view="rendez-vous" hidden>
+ <section class="phero"><div class="wrap">
+  <p class="crumb"><a href="#accueil">Accueil</a> › Prendre rendez-vous</p>
+  <h1>Prendre <span class="on">rendez-vous</span></h1>
+  <p>Avec un conseiller d'orientation, sur place, par téléphone ou en visio. Gratuit, pour les jeunes comme pour les adultes.</p>
+ </div></section>
+ <div class="sep"></div>
+ <section class="sec">
+  <h2 class="tab">Ton rendez-vous</h2>
+  <div class="wrap split">
+   <div class="formcard">
+    <form data-ok="okRdv">
+     <fieldset class="seg"><legend>Comment ?</legend>
+      <label><input type="radio" name="mode" value="Sur place" checked><span>Sur place</span></label>
+      <label><input type="radio" name="mode" value="Téléphone"><span>Téléphone</span></label>
+      <label><input type="radio" name="mode" value="Visio"><span>Visio</span></label>
+     </fieldset>
+     <label>Sujet<select name="sujet"><option>Orientation et choix de formation</option><option>Parcoursup</option><option>Bourses et aides financières</option><option>Reprise d'études / bac en candidat libre</option><option>Préparer un concours, CV, portfolio</option><option>Bien-être</option></select></label>
+     <div class="f2"><label>Date souhaitée<input type="date" name="date" id="rdvDate" required></label>
+      <label>Créneau<select name="creneau"><option>9 h – 10 h</option><option>10 h – 11 h</option><option>14 h – 15 h</option><option>15 h – 16 h</option><option>17 h – 18 h</option></select></label></div>
+     <div class="f2"><label>Prénom et nom<input name="nom" required autocomplete="name"></label><label>E-mail<input type="email" name="mail" required autocomplete="email"></label></div>
+     <label>Ce que tu veux aborder (facultatif)<textarea name="message"></textarea></label>
+     <div><button class="btn btn-red" type="submit">Confirmer le rendez-vous</button></div>
+     <p class="ok" id="okRdv" role="status"></p>
+    </form>
+   </div>
+   <div class="box">
+    <h3>Comment ça se passe ?</h3>
+    <ul class="list"><li>Un entretien de 45 minutes environ.</li><li>Tu viens avec tes questions, même floues.</li><li>Tu repars avec des pistes concrètes et les prochaines étapes.</li></ul>
+   </div>
+  </div>
+ </section>
+</div>
+
+<!-- ============ CONNEXION ============ -->
+<div class="view" data-view="connexion" hidden>
+ <section class="phero"><div class="wrap">
+  <p class="crumb"><a href="#accueil">Accueil</a> › Mon compte</p>
+  <h1>Mon <span class="on">compte</span></h1>
+  <p>Retrouve tes résultats de quiz, tes rendez-vous et tes fiches enregistrées.</p>
+ </div></section>
+ <div class="sep"></div>
+ <section class="sec">
+  <h2 class="tab" id="authTitle">Connexion</h2>
+  <div class="wrap"><div class="formcard narrow">
+   <form data-ok="okAuth" id="authForm">
+    <label id="nameField" hidden>Prénom<input name="prenom" autocomplete="given-name"></label>
+    <label>E-mail<input type="email" name="mail" required autocomplete="email"></label>
+    <label>Mot de passe<input type="password" name="mdp" required autocomplete="current-password"></label>
+    <div class="row" style="justify-content:space-between;align-items:center"><button class="btn btn-red" type="submit" id="authBtn">Se connecter</button><a href="#connexion" class="small" id="forgot">Mot de passe oublié ?</a></div>
+    <p class="small">Pas encore de compte ? <button type="button" id="toggleAuth" style="background:none;border:0;color:var(--ink);font:inherit;text-decoration:underline;cursor:pointer;padding:0">Créer un compte</button></p>
+    <p class="ok" id="okAuth" role="status">Démo : la connexion sera reliée au site final.</p>
+   </form>
+  </div></div>
+ </section>
+</div>
+
+<!-- ============ ARTICLES ============ -->
+<div class="view" data-view="articles" hidden>
+ <section class="phero"><div class="wrap">
+  <p class="crumb"><a href="#accueil">Accueil</a> › Articles</p>
+  <h1>Nos <span class="on">articles</span></h1>
+  <p>Brèves, récits, portraits, critiques, éditos… écrits par l'équipe Educati'on ! pour t'informer sur les études supérieures.</p>
+ </div></section>
+ <div class="sep"></div>
+ <section class="sec">
+  <h2 class="tab">Tous les articles</h2>
+  <div class="wrap">
+   <div class="chips" id="chips" role="group" aria-label="Filtrer par format"></div>
+   <div class="grid3" id="allArticles"></div>
+  </div>
+ </section>
+</div>
+
+<!-- ============ ARTICLE : FLOU ============ -->
+<div class="view" data-view="article-flou" hidden>
+ <section class="phero"><div class="wrap">
+  <p class="crumb"><a href="#accueil">Accueil</a> › <a href="#articles">Articles</a> › Critique</p>
+  <span class="chip" style="background:var(--red)">Critique</span>
+  <h1>« Flou » : un témoignage juste, <span class="on">mais sans solutions</span></h1>
+  <p>Par Arij et Cheima, étudiantes en BUT MMI et Guides Educati'on !</p>
+ </div></section>
+ <div class="sep"></div>
+ <section class="sec" style="padding-top:clamp(40px,5vw,72px)"><article class="wrap art">
+  <p class="chapo">Dans le podcast « Flou », le CIDJ (Centre d'information et de documentation jeunesse) suit Lou, lycéenne en terminale, pendant sa procédure Parcoursup. L'épisode 3, « Tenter sa chance », dévoile ses vœux et ses doutes. Notre avis : un témoignage juste et touchant, mais sans solutions.</p>
+  <p>Le CIDJ publie Flou en mars 2021, sur son site et sur Spotify. En 5 minutes, l'épisode 3 met des mots sur le quotidien de milliers de lycéens. On le recommande.</p>
+  <h3>Une voix vraie</h3>
+  <p>Lou parle avec ses propres mots. Elle hésite. Elle cherche ses phrases. Rien ne sonne récité. La musique rythme ses confidences.</p>
+  <h3>Un stress que tu connais sûrement</h3>
+  <p>Lou multiplie les vœux : médecine, droit, sociologie, psychologie. Elle vise même Assas, réputée très exigeante. Sa stratégie tient en une phrase : « on tente notre chance ». Elle redoute aussi le conseil de classe. Les professeurs jugent ses vœux. Pourtant, personne ne l'aide à les construire. Sur Parcoursup, chaque vœu reçoit l'avis du chef d'établissement dans la fiche Avenir.</p>
+  <h3>La débrouille comme méthode</h3>
+  <p>Pour ses lettres de motivation, Lou récupère celles d'une amie de l'année précédente. Le podcast révèle ce système D. Faute d'accompagnement, les lycéens se transmettent des modèles d'une année sur l'autre.</p>
+  <h3>Une seule histoire</h3>
+  <p>Lou compte sur le soutien de ses parents. Elle choisit de rester à Paris, près de sa famille et de ses amis. Ce choix s'explique par le manque de revenus et le contexte du Covid. Beaucoup de jeunes ne bénéficient ni de ce soutien, ni de ce réseau. Le podcast oublie leur voix.</p>
+  <h3>Un constat sans solution</h3>
+  <p>L'épisode décrit le stress. Il n'apporte aucun conseil concret : pas d'expert, pas de ressource, pas de piste pour se faire aider. Depuis 2021, le calendrier de Parcoursup évolue aussi.</p>
+  <blockquote>Écoute Flou comme un témoignage, pas comme un guide.</blockquote>
+  <p>Tu t'y reconnais sûrement, et tu t'y sens moins seul. Et si, comme Lou, tu te sens perdu face à tes vœux, les Guides d'Educati'on ! t'accompagnent.</p>
+  <p><a class="btn btn-red" href="#rendez-vous" style="margin-top:8px">Prendre rendez-vous avec un Guide</a></p>
+  <p class="src">Sources : Flou, épisode 3 « Tenter sa chance », CIDJ, 2021 (5 min) ; fiche Avenir, parcoursup.gouv.fr</p>
+ </article></section>
+</div>
+
+<!-- ============ ARTICLE : LUCIE ============ -->
+<div class="view" data-view="article-lucie" hidden>
+ <section class="phero"><div class="wrap">
+  <p class="crumb"><a href="#accueil">Accueil</a> › <a href="#articles">Articles</a> › Récit</p>
+  <span class="chip">Récit</span>
+  <h1>Lucie : « Ça a été <span class="on">la meilleure décision</span> de toute ma scolarité »</h1>
+  <p>On lui conseillait un BTS MCO. Elle est aujourd'hui en deuxième année de BUT MMI.</p>
+ </div></section>
+ <div class="sep"></div>
+ <section class="sec" style="padding-top:clamp(40px,5vw,72px)"><article class="wrap art">
+  <p class="chapo">Lucie a 20 ans et poursuit sa deuxième année en BUT Métiers du Multimédia et de l'Internet, alors que ses professeurs lui conseillaient un BTS MCO en terminale.</p>
+  <p>Trois ans plus tôt, en terminale de baccalauréat professionnel, elle se perd dans les démarches Parcoursup et ignore quelle formation choisir. Ses enseignants évoquent alors plusieurs pistes, notamment un BTS MCO (Management Commercial Opérationnel).</p>
+  <p>Aucune de ces propositions ne convainc Lucie, qui décide de solliciter l'aide d'Educati'on !. Après un entretien, un accompagnement et des conseils personnalisés, elle candidate au BUT MMI de Bobigny et intègre la formation dès la première vague d'admission.</p>
+  <blockquote>« Ça a été la meilleure décision de toute ma scolarité. »</blockquote>
+  <p>Aujourd'hui, après deux ans d'études, c'est ce qu'elle retient de son parcours.</p>
+  <p><a class="btn btn-red" href="#rendez-vous" style="margin-top:8px">Moi aussi, je veux être accompagné</a></p>
+ </article></section>
+</div>
+
+<!-- ============ MENTIONS ============ -->
+<div class="view" data-view="mentions-legales" hidden>
+ <section class="phero"><div class="wrap">
+  <p class="crumb"><a href="#accueil">Accueil</a> › Mentions légales</p>
+  <h1>Mentions <span class="on">légales</span></h1>
+ </div></section>
+ <div class="sep"></div>
+ <section class="sec"><h2 class="tab">Informations</h2><div class="wrap split">
+  <div><p class="mute">Éditeur : association Educati'on !. Responsable de publication : à désigner par l'équipe. Hébergeur : à compléter une fois choisi.</p>
+  <p class="mute" style="margin-top:14px">Les textes, images et vidéos réalisés par l'équipe appartiennent à l'association. Les contenus extérieurs sont utilisés dans le respect des droits d'auteur.</p></div>
+  <div class="box"><h3>Données personnelles</h3><p>Les données collectées via les rendez-vous, les quiz et le formulaire de contact servent uniquement à t'accompagner. Conformément au RGPD, tu peux y accéder, les modifier ou les supprimer.</p></div>
+ </div></section>
+</div>
+
+</main>
+
+<footer>
+ <div class="wrap foot">
+  <div>
+   <a class="logo" href="#accueil"><svg aria-hidden="true"><use href="#mascotte"/></svg><span class="logo-txt">Educati<span class="on">'on !</span></span></a>
+   <p>Educati'on ! t'informe et t'accompagne vers les études supérieures, à tout âge et quel que soit ton parcours.</p>
+  </div>
+  <div><h4>Rubriques</h4><ul><li><a href="#trouve-ta-voie">Trouve ta voie</a></li><li><a href="#aides">Aides &amp; démarches</a></li><li><a href="#bourses">Bourses</a></li><li><a href="#concours">Concours &amp; examens</a></li><li><a href="#bien-etre">Bien-être</a></li><li><a href="#articles">Articles</a></li></ul></div>
+  <div><h4>Educati'on !</h4><ul><li><a href="#qui-sommes-nous">Qui sommes-nous ?</a></li><li><a href="#contact">Nous contacter</a></li><li><a href="#rendez-vous">Prendre rendez-vous</a></li><li><a href="#connexion">Se connecter</a></li></ul></div>
+  <div><h4>Suis-nous</h4><ul><li><a href="#accueil">Instagram</a></li><li><a href="#accueil">TikTok</a></li><li><a href="#accueil">YouTube</a></li><li><a href="#accueil">LinkedIn</a></li></ul></div>
+ </div>
+ <div class="wrap legal">© 2026 Educati'on ! – <a href="#mentions-legales">Mentions légales et confidentialité</a> – Projet SAE 3.02 – BUT MMI, groupe C</div>
+</footer>
+
+<script>
+{
+const icons={
+ compass:'<circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/>',
+ euro:'<path d="M17 6.5A7 7 0 1 0 17 17.5"/><path d="M4 10.5h9M4 13.5h9"/>',
+ cap:'<path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11v5c3 2 9 2 12 0v-5"/>',
+ pen:'<path d="M4 20l4-1 11-11-3-3L5 16z"/><path d="M14 6l3 3"/>',
+ heart:'<path d="M12 20s-8-5-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 9c0 6-8 11-8 11z"/>',
+ cal:'<rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/>',
+ chat:'<path d="M4 5h16v11H9l-5 4z"/>',
+ brush:'<path d="M14 4l6 6-8 8H6v-6z"/>',
+ brief:'<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V4h6v3"/>'
+};
+const ic=n=>`<span class="ico"><svg viewBox="0 0 24 24">${icons[n]}</svg></span>`;
+const card=(c,i)=>`<a class="card vis ${i%2?'g':''}" href="${c.href}"><div class="face">${ic(c.icon)}${c.date?`<p class="date">${c.date}</p>`:''}<h3>${c.t}</h3><p>${c.d}</p><span class="pill">${c.b||'Découvrir →'}</span></div></a>`;
+const put=(id,arr)=>{const el=document.getElementById(id);if(el)el.innerHTML=arr.map(card).join('')};
+
+put('themes',[
+ {t:'Trouve ta voie',d:"Quiz d'orientation, formations et fiches métiers pour construire ton projet.",icon:'compass',href:'#trouve-ta-voie'},
+ {t:'Aides & démarches',d:"Parcoursup, aides financières, reprise d'études, bac en candidat libre.",icon:'euro',href:'#aides'},
+ {t:'Bourses',d:"Critères, échelons et dossier : on t'accompagne jusqu'au bout.",icon:'cap',href:'#bourses'},
+ {t:'Concours & examens',d:'Ateliers de préparation, CV, lettre de motivation et portfolio.',icon:'pen',href:'#concours'}
+]);
+put('news',[
+ {date:'Janvier',t:'Ouverture de Parcoursup : les dates à retenir',d:'Inscription, vœux, confirmation : le calendrier expliqué simplement.',icon:'cal',href:'#aides',b:'Lire →'},
+ {date:'Atelier',t:'Atelier CV et lettre de motivation',d:'Deux heures pour repartir avec un CV propre.',icon:'pen',href:'#concours',b:'Lire →'},
+ {date:'Session info',t:'Tout comprendre sur les bourses',d:"Échelons, DSE, justificatifs : posez toutes vos questions.",icon:'euro',href:'#bourses',b:'Lire →'},
+ {date:'Bien-être',t:'Préparer ses examens sans stress',d:'Nos conseils pour garder le cap pendant les révisions.',icon:'heart',href:'#bien-etre',b:'Lire →'}
+]);
+put('metiers',[
+ {t:'Création & design',d:'Graphiste, UX designer, styliste, motion designer.',icon:'brush',href:'#rendez-vous',b:'Voir les fiches →'},
+ {t:'Commerce & gestion',d:'Chargé de marketing, comptable, chef de produit.',icon:'brief',href:'#rendez-vous',b:'Voir les fiches →'},
+ {t:'Santé & social',d:'Infirmier, éducateur spécialisé, assistant social.',icon:'heart',href:'#rendez-vous',b:'Voir les fiches →'},
+ {t:'Numérique',d:'Développeur web, technicien réseau, data analyst.',icon:'compass',href:'#rendez-vous',b:'Voir les fiches →'}
+]);
+put('ateliers',[
+ {t:'Préparer un concours',d:'Méthode, entraînements et oraux blancs avec des pros.',icon:'cap',href:'#rendez-vous',b:"S'inscrire →"},
+ {t:'Créer son CV',d:"Mettre en valeur ton parcours, même s'il n'est pas linéaire.",icon:'brief',href:'#rendez-vous',b:"S'inscrire →"},
+ {t:'Lettre de motivation',d:"Trouver les bons mots pour Parcoursup ou une candidature.",icon:'pen',href:'#rendez-vous',b:"S'inscrire →"},
+ {t:'Monter son portfolio',d:'Pour les écoles et formations créatives.',icon:'brush',href:'#rendez-vous',b:"S'inscrire →"}
+]);
+
+const ART=[
+ {f:'Critique',t:'« Flou » : un témoignage juste, mais sans solutions',by:'Arij et Cheima',d:'Le podcast du CIDJ suit Lou pendant Parcoursup. Notre avis.',href:'#article-flou',ok:1},
+ {f:'Reportage / récit',t:'Lucie : « La meilleure décision de toute ma scolarité »',by:'Josué et Yann',d:'On lui conseillait un BTS MCO, elle est aujourd\'hui en BUT MMI.',href:'#article-lucie',ok:1},
+ {f:'Brève',t:'Brève n°1',by:'Lola',d:'Une info courte sur l\'actualité des études supérieures.'},
+ {f:'Brève',t:'Brève n°2',by:'Lola',d:'Une info courte sur l\'actualité des études supérieures.'},
+ {f:'Brève',t:'Brève n°3',by:'Lola',d:'Une info courte sur l\'actualité des études supérieures.'},
+ {f:'Reportage / récit',t:'Deuxième reportage',by:'Josué et Yann',d:'Un récit de terrain.'},
+ {f:'Portrait',t:'Portrait n°1',by:'Nolann et Andy',d:'Le parcours d\'un étudiant ou d\'une personne en reprise d\'études.'},
+ {f:'Portrait',t:'Portrait n°2',by:'Nolann et Andy',d:'Le parcours d\'un étudiant ou d\'une personne en reprise d\'études.'},
+ {f:'Critique',t:'Deuxième critique',by:'Arij et Cheima',d:'Un podcast, un livre ou une vidéo sur l\'orientation, passé au crible.'},
+ {f:'Éditorial',t:'Éditorial n°1',by:'Khemy et Jenny',d:'La parole de l\'équipe Educati\'on !.'},
+ {f:'Éditorial',t:'Éditorial n°2',by:'Khemy et Jenny',d:'La parole de l\'équipe Educati\'on !.'},
+ {f:'Enquête / analyse',t:'Enquête n°1',by:'',d:'Une enquête sur un enjeu de l\'orientation.'},
+ {f:'Interview',t:'Interview n°1',by:'',d:'Un professionnel ou un étudiant répond à nos questions.'},
+ {f:'Chronique',t:'Chronique n°1',by:'',d:'Un regard régulier sur la vie étudiante.'},
+ {f:'Billet d\'humeur',t:'Billet d\'humeur n°1',by:'',d:'Un coup de cœur ou un coup de gueule.'},
+ {f:'Tribune',t:'Tribune n°1',by:'',d:'Une prise de position sur l\'accès aux études.'}
+];
+const acard=(a,i)=>`<a class="card vis ${i%2?'g':''} ${a.ok?'':'soon'}" href="${a.ok?a.href:'#articles'}"><div class="face"><span class="fmt">${a.f}</span><h3>${a.t}</h3><p class="by">${a.by?'Par '+a.by:'Rédacteurs à définir'}</p><p>${a.d}</p><span class="pill">${a.ok?'Lire →':'À venir'}</span></div></a>`;
+/* Accueil mixte */
+const svgI=n=>`<svg viewBox="0 0 24 24">${icons[n]}</svg>`;
+document.getElementById('profils').innerHTML=[
+ ['L','Tu es au collège ou au lycée','Tu prépares ton orientation et Parcoursup.',['Découvrir les formations après le bac','Faire le quiz d\'orientation','Préparer tes vœux Parcoursup'],'#trouve-ta-voie','C\'est par ici !'],
+ ['É','Tu es étudiant et tu veux changer','Tu n\'es pas dans la bonne formation ? Ce n\'est pas un échec.',['Connaître les passerelles','Te réorienter en cours d\'année','Garder ta bourse'],'#aides','On t\'explique !'],
+ ['A','Tu es adulte et tu veux reprendre','Il n\'est jamais trop tard pour les études supérieures.',['Passer le bac en candidat libre','Le DAEU et la VAE','Financer ta reprise d\'études'],'#aides','C\'est possible !']
+].map(([i,t,d,l,h,c])=>`<div class="prof"><span class="pi">${i}</span><h3>${t}</h3><p>${d}</p><ul>${l.map(x=>`<li>${x}</li>`).join('')}</ul><a class="hand" href="${h}">${c} →</a></div>`).join('');
+document.getElementById('how').innerHTML=[
+ ['Explore tes envies','Le quiz t\'aide à mettre des mots sur ce qui te plaît.','en 2 min','#trouve-ta-voie','Faire le quiz'],
+ ['Explore tes pistes','Formations, métiers, débouchés : des fiches claires et courtes.','sans jargon','#trouve-ta-voie','Voir les formations'],
+ ['Parle à un Guide','Un conseiller t\'écoute, sur place, par téléphone ou en visio.','gratuit !','#rendez-vous','Prendre rdv'],
+ ['On t\'accompagne','Parcoursup, bourses, dossiers : on reste là jusqu\'au bout.','jusqu\'au bout','#aides','Les démarches']
+].map(([t,d,h,l,a])=>`<li><div><b>${t}</b><span class="hand">${h}</span><p>${d}</p></div><a href="${l}">${a} →</a></li>`).join('');
+document.getElementById('services').innerHTML=[
+ ['Trouve ta voie','Quiz, formations et fiches métiers.','compass','#trouve-ta-voie'],
+ ['Aides & démarches','Parcoursup, aides financières, reprise d\'études.','euro','#aides'],
+ ['Bourses','Critères, échelons et dossier social étudiant.','cap','#bourses'],
+ ['Concours & examens','Ateliers concours, CV, lettre et portfolio.','pen','#concours'],
+ ['Bien-être','Stress, sommeil, solitude : des ressources et des contacts.','heart','#bien-etre'],
+ ['Rendez-vous','Un Guide pour toi, gratuitement.','chat','#rendez-vous']
+].map(([t,d,i,h])=>`<a class="svc" href="${h}"><span class="si">${svgI(i)}</span><h3>${t}</h3><p>${d}</p><span>Découvrir →</span></a>`).join('');
+const mini=['Créer','Aider les autres','Comprendre','Bouger','Convaincre','Le numérique','Les langues','La nature'];
+const mc=document.getElementById('minichips'), mcount=document.getElementById('miniCount');
+mc.innerHTML=mini.map(m=>`<button type="button" aria-pressed="false">${m}</button>`).join('');
+mc.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;b.setAttribute('aria-pressed',b.getAttribute('aria-pressed')==='true'?'false':'true');const n=mc.querySelectorAll('[aria-pressed=true]').length;mcount.textContent=n+(n>1?' choix':' choix');});
+document.getElementById('timeline').innerHTML=[
+ ['Décembre – janvier','Ouverture de Parcoursup','Découvre le catalogue des formations.'],
+ ['Mi-janvier – mi-mars','Inscription et vœux','Formule tes vœux sur Parcoursup.'],
+ ['En début d\'année','Dossier social étudiant','Demande ta bourse sans attendre tes résultats.'],
+ ['À partir de juin','Réponses Parcoursup','Réponds aux propositions dans les délais.']
+].map(([d,t,p])=>`<li><span>${d}</span><b>${t}</b><p>${p}</p></li>`).join('');
+const icard=(a,i)=>`<a class="info" href="${a.ok?a.href:'#articles'}"><div class="pic p${i%6}"><span class="fmt">${a.f}</span><svg aria-hidden="true"><use href="#mascotte"/></svg></div><div class="txt"><p class="small" style="margin-bottom:6px">${a.by?'Par '+a.by:'Rédacteurs à définir'}${a.ok?'':', à venir'}</p><h3>${a.t}</h3><p>${a.d}</p></div></a>`;
+const homeF=['Tous','Critique','Reportage / récit','Brève','Portrait','Éditorial'];
+let hcur='Tous'; const hc=document.getElementById('homeChips'), inf=document.getElementById('infos');
+const drawHome=()=>{hc.innerHTML=homeF.map(f=>`<button type="button" aria-pressed="${f===hcur}">${f}</button>`).join('');inf.innerHTML=ART.filter(a=>hcur==='Tous'||a.f===hcur).slice(0,6).map(icard).join('');};
+hc.addEventListener('click',e=>{const b=e.target.closest('button');if(b){hcur=b.textContent;drawHome();}});
+hc.classList.add('chips'); drawHome();
+document.getElementById('faqHome').innerHTML=[
+ ['C\'est vraiment gratuit ?','Oui. Les infos, le quiz et les rendez-vous avec un Guide sont gratuits pour les jeunes. Nous sommes financés par des subventions publiques.'],
+ ['Je ne sais pas du tout ce que je veux faire, c\'est grave ?','Non, c\'est très courant. Commence par le quiz, puis parles-en avec un Guide : on part de tes envies, pas de ton bac.'],
+ ['Mon bac ne correspond pas à ce que je veux faire, c\'est fichu ?','Non. Beaucoup de formations accueillent tous les bacs, et il existe des passerelles. Un parcours n\'est pas forcément linéaire.'],
+ ['J\'ai plus de 26 ans, vous pouvez m\'aider ?','Oui. Reprise d\'études, bac en candidat libre, DAEU : on accompagne aussi les adultes.'],
+ ['Comment se passe un rendez-vous ?','Environ 45 minutes, sur place, par téléphone ou en visio. Tu viens avec tes questions, même floues.']
+].map(([q,a],i)=>`<details ${i?'':'open'}><summary>${q}</summary><p>${a}</p></details>`).join('');
+const fmts=['Tous',...new Set(ART.map(a=>a.f))];
+const chips=document.getElementById('chips'), all=document.getElementById('allArticles');
+let cur='Tous';
+const drawArts=()=>{chips.innerHTML=fmts.map(f=>`<button type="button" aria-pressed="${f===cur}">${f}</button>`).join('');all.innerHTML=ART.filter(a=>cur==='Tous'||a.f===cur).map(acard).join('');};
+chips.addEventListener('click',e=>{const b=e.target.closest('button');if(b){cur=b.textContent;drawArts();}});
+drawArts();
+
+const sessions=[['Mer. 9 déc.','Atelier CV','14 h – 16 h, sur place'],['Sam. 12 déc.','Préparer les oraux de concours','10 h – 12 h, en visio'],['Mer. 16 déc.','Lettre de motivation Parcoursup','14 h – 16 h, sur place'],['Sam. 9 janv.','Portfolio : les bases','10 h – 13 h, sur place']];
+document.getElementById('sessions').innerHTML=sessions.map(s=>`<details><summary><span><span class="small" style="display:block;font-family:Figtree">${s[0]}</span>${s[1]}</span></summary><p>${s[2]}. Places limitées. <a href="#rendez-vous">Réserver ma place</a></p></details>`).join('');
+
+const team=[['Lola Parsy Cathalas Mutshindo','Cheffe de projet','assets/pp-lola.jpg'],['Khemy Cotellon','Charte graphique','assets/pp-khemy.jpg'],['Arij Melliti','Charte éditoriale, benchmark','assets/pp-arij.jpg'],['Josué Kilandi','Audiovisuel, graphisme','assets/pp-josue.jpg'],['Jenny Cao','Développement, arborescence','assets/pp-jenny.jpg'],['Andy Ranaivoson','Développement front et back','assets/pp-andy.jpg'],['Yann Iaccopucci','Graphiste, charte graphique','assets/pp-yann.jpg'],['Nolann Serer','Graphiste, audiovisuel','assets/pp-nolann.jpg'],['Cheima Lahmar','Développement, maquette','assets/pp-cheima.jpg']];
+/* Photo de profil : ajoute un 3e élément au membre, ex. ['Lola …','Cheffe de projet','assets/lola.jpg'] */
+document.getElementById('team').innerHTML=team.map(([n,r,photo],i)=>`<div class="mem"><div class="av a${i%9}">${photo?`<img src="${photo}" alt="Photo de ${n}">`:'<svg aria-hidden="true"><use href="#mascotte"/></svg>'}</div><b>${n}</b><span>${r}</span></div>`).join('');
+
+/* Quiz */
+const Q=[
+ {q:'Ce qui te motive le plus ?',o:[['Créer, imaginer, fabriquer','crea'],['Aider et prendre soin des autres','soin'],['Comprendre comment ça marche','tech'],['Organiser, convaincre, entreprendre','com']]},
+ {q:'Tu apprends mieux…',o:[['En faisant, avec des projets concrets','pro'],['En lisant et en réfléchissant','theo'],['Un mélange des deux','mix'],['Je ne sais pas encore','mix']]},
+ {q:'Combien de temps te vois-tu étudier ?',o:[['2 ans, je veux vite travailler','2'],['3 ans','3'],['5 ans ou plus','5'],['Aucune idée','3']]},
+ {q:'Où en es-tu aujourd\'hui ?',o:[['Au collège ou au lycée','lyc'],['Étudiant, je veux me réorienter','reo'],['Adulte, je veux reprendre mes études','adu'],['Autre situation','lyc']]}
+];
+const domains={crea:['Création & numérique','graphiste, UX designer, motion designer, styliste'],soin:['Santé & social','infirmier, éducateur spécialisé, assistant social'],tech:['Sciences & numérique','développeur, technicien, ingénieur, data analyst'],com:['Commerce & gestion','chargé de marketing, chef de projet, entrepreneur']};
+const forms={'2':'un BTS','3':'un BUT ou une licence','5':'une licence puis un master, ou une école'};
+const tips={lyc:'Ajoute ces formations dans tes vœux Parcoursup, même si on te dit que ce n\'est « pas pour toi ».',reo:'La réorientation est possible en cours d\'année ou via les passerelles : tu ne perds pas ton temps.',adu:'Tu peux passer le bac en candidat libre ou le DAEU, puis candidater sur Parcoursup.'};
+let step=0,ans=[];
+const quiz=document.getElementById('quiz');
+function renderQuiz(){
+ if(step<Q.length){
+  const s=Q[step];
+  quiz.innerHTML=`<div class="qbar"><i style="width:${step/Q.length*100}%"></i></div><p class="small">Question ${step+1} sur ${Q.length}</p><h3 style="font-size:clamp(24px,2.6vw,32px);margin-top:8px">${s.q}</h3><div class="qopts">${s.o.map((o,i)=>`<button class="qopt" data-i="${i}">${o[0]}</button>`).join('')}</div>`;
+ }else{
+  const [d,,len,who]=ans; const pref=ans[1];
+  let f=forms[len]; if(pref==='pro'&&len!=='2')f='un BUT, plus concret'; if(pref==='theo'&&len==='3')f='une licence à l\'université';
+  quiz.innerHTML=`<div class="qbar"><i style="width:100%"></i></div><div class="qres"><span class="chip">Ton résultat</span><h3>Piste : ${domains[d][0]}</h3><p class="mute">Une formation qui pourrait te plaire : <b style="color:var(--ink)">${f}</b>. Exemples de métiers : ${domains[d][1]}.</p><p class="mute" style="margin-top:10px">${tips[who]}</p><div class="row"><a class="btn btn-red" href="#rendez-vous">En parler avec un conseiller</a><button class="btn btn-line" id="redo">Recommencer</button></div><p class="sample">Ce quiz donne des pistes, pas une décision. Toutes les voies restent ouvertes.</p></div>`;
+ }
+}
+quiz.addEventListener('click',e=>{
+ const b=e.target.closest('.qopt'); if(b){ans[step]=Q[step].o[+b.dataset.i][1];step++;renderQuiz();return;}
+ if(e.target.id==='redo'){step=0;ans=[];renderQuiz();}
+});
+renderQuiz();
+
+/* Forms (démo, pas d'envoi) */
+document.querySelectorAll('form[data-ok]').forEach(f=>f.addEventListener('submit',e=>{
+ e.preventDefault(); const ok=document.getElementById(f.dataset.ok);
+ if(f.dataset.ok==='okRdv'){const d=new FormData(f);ok.textContent=`Demande notée : rendez-vous ${String(d.get('mode')).toLowerCase()} le ${new Date(d.get('date')).toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'})}, ${d.get('creneau')}. Démo : la demande n'est pas encore envoyée, elle sera reliée au site final.`;}
+ ok.classList.add('show');
+}));
+const rd=document.getElementById('rdvDate'); if(rd){const t=new Date();t.setDate(t.getDate()+1);rd.min=t.toISOString().slice(0,10);}
+
+/* Auth toggle */
+let reg=false;
+document.getElementById('toggleAuth').addEventListener('click',e=>{
+ reg=!reg; document.getElementById('nameField').hidden=!reg;
+ document.getElementById('authTitle').textContent=reg?'Créer un compte':'Connexion';
+ document.getElementById('authBtn').textContent=reg?'Créer mon compte':'Se connecter';
+ document.getElementById('forgot').hidden=reg;
+ e.target.textContent=reg?'Se connecter':'Créer un compte';
+ e.target.parentNode.firstChild.textContent=reg?'Déjà un compte ? ':'Pas encore de compte ? ';
+});
+
+/* Mode clair / sombre */
+const SUN='<circle cx="12" cy="12" r="4.5"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/>';
+const MOON='<path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/>';
+const modeBtn=document.getElementById('modeBtn'), modeIco=document.getElementById('modeIco');
+function setMode(m){
+ if(m==='light')document.documentElement.setAttribute('data-mode','light');else document.documentElement.removeAttribute('data-mode');
+ modeIco.innerHTML=m==='light'?MOON:SUN;
+ modeBtn.setAttribute('aria-label',m==='light'?'Passer en mode sombre':'Passer en mode clair');
+ try{localStorage.setItem('educ-mode',m)}catch(e){}
+}
+let saved='dark'; try{saved=localStorage.getItem('educ-mode')||'dark'}catch(e){}
+setMode(saved);
+modeBtn.addEventListener('click',()=>setMode(document.documentElement.getAttribute('data-mode')==='light'?'dark':'light'));
+
+/* Router */
+const views=[...document.querySelectorAll('[data-view]')];
+const menu=document.getElementById('menu'), burger=document.getElementById('burger');
+function route(){
+ const id=(location.hash||'#accueil').slice(1);
+ const v=views.find(x=>x.dataset.view===id)||views[0];
+ views.forEach(x=>x.hidden=x!==v);
+ document.querySelectorAll('.menu a').forEach(a=>{if(a.getAttribute('href')==='#'+v.dataset.view)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');});
+ menu.classList.remove('open'); burger.setAttribute('aria-expanded','false'); tbMenu.setAttribute('aria-expanded','false');
+ document.querySelectorAll('[data-tab]').forEach(a=>{if(a.getAttribute('href')==='#'+v.dataset.view)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');});
+ window.scrollTo(0,0);
+}
+const tbMenu=document.getElementById('tbMenu');
+tbMenu.addEventListener('click',()=>{const o=menu.classList.toggle('open');tbMenu.setAttribute('aria-expanded',String(o));});
+burger.addEventListener('click',()=>{const o=menu.classList.toggle('open');burger.setAttribute('aria-expanded',String(o));});
+window.addEventListener('hashchange',route);
+route();
+}
+</script>
+</body>
+</html>
